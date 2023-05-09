@@ -1,6 +1,7 @@
 package com.example.blogweek9.controller;
 
 import com.example.blogweek9.dto.PostDTO;
+import com.example.blogweek9.dto.PostResponse;
 import com.example.blogweek9.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,11 @@ public class PostController {
 
     }
     @GetMapping
-    public List<PostDTO> getAllPosts(){
-        return postService.getAllPost();
+    public PostResponse getAllPosts(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pagesize", defaultValue = "10", required = false) int pageSize
+    ){
+        return postService.getAllPost(pageNo, pageSize);
     }
 
     @GetMapping("/{id}")

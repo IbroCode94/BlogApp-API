@@ -1,6 +1,7 @@
 package com.example.blogweek9.service.serviceImpl;
 
 import com.example.blogweek9.dto.PostDTO;
+import com.example.blogweek9.dto.PostResponse;
 import com.example.blogweek9.entity.Posts;
 import com.example.blogweek9.entity.User;
 import com.example.blogweek9.enums.Role;
@@ -10,7 +11,11 @@ import com.example.blogweek9.repository.UserRepository;
 import com.example.blogweek9.service.PostService;
 import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,10 +53,25 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public List<PostDTO> getAllPost() {
-        List<Posts> posts = postRepository.findAll();
-        return posts.stream().map(this::mapToDTO).collect(Collectors.toList());
+    public PostResponse getAllPost(int pageNo, int pageSize ) {
 
+        //create pageable instance
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Posts> posts = postRepository.findAll(pageable);
+
+        //get content for page object
+        List<Posts> listOfPost = posts.getContent();
+
+        List<PostDTO> content=  listOfPost.stream().map(this::mapToDTO).collect(Collectors.toList());
+        PostResponse postResponse  = new PostResponse();
+        postResponse.setContent(content);
+        postResponse.setPageNo(posts.getNumber());
+        postResponse.setPageSize(posts.getSize());
+        postResponse.setTotalElements(posts.getTotalElements());
+        postResponse.setTotalPages(posts.getTotalPages());
+        postResponse.setLast(postResponse.isLast());
+
+        return postResponse;
     }
 
     @Override

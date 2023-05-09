@@ -3,6 +3,7 @@ package com.example.blogweek9.service;
 
 
 import com.example.blogweek9.dto.PostDTO;
+import com.example.blogweek9.dto.PostResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 public interface PostService {
     PostDTO createPost(PostDTO postDTO, HttpSession session);
 
-  List<PostDTO> getAllPost();
+    PostResponse getAllPost(int pageNo, int pageSize );
 
   PostDTO getPostById(long id);
 
