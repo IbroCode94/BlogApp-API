@@ -34,7 +34,7 @@ public class ServiceMockitoTest {
     @InjectMocks
     private UserServiceImpl userService;
     @Test
-    public void test_creatUser(){
+    public void creatUser(){
         UserDTO userDTO  = new UserDTO();
         userDTO.setUserName("Ibrahim");
         userDTO.setEmail("Ibro@gmail.com");
@@ -51,22 +51,10 @@ public class ServiceMockitoTest {
         when(userRepository.findByEmail(userDTO.getEmail())).thenReturn(Optional.empty());
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
 
-       // assertNotNull(userService.createUser(userDTO));
+
         assertEquals(mapper.map(userRepository.save(savedUser),UserDTO.class),userService.createUser(userDTO));
 
-//
-//        //userService.createUser(userDTO);
-//
-//
-//
-//        // Call the createUser method
-//        UserDTO createdUserDTO = userService.createUser(userDTO);
-//
-//        // Assert that the created user DTO is not null
-//        Assertions.assertNotNull(createdUserDTO);
-//
-//        // Assert that the created user DTO matches the expected user DTO
-//        Assertions.assertEquals(userDTO, createdUserDTO);
+
 
     }
 }
